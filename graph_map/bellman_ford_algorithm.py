@@ -1,5 +1,7 @@
-# https://www.w3schools.com/dsa/dsa_algo_graphs_bellmanford.php
+# ********* Reference link *********
 
+# https://www.w3schools.com/dsa/dsa_algo_graphs_bellmanford.php
+# The Yen's Algorithm has been implemented by following the dijkstra_algorithm
 class Graph:
     def __init__(self, size):
         self.adj_matrix = [[0] * size for _ in range(size)]
