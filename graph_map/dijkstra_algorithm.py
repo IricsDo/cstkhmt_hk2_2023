@@ -6,7 +6,7 @@
 # https://github.com/handloomweaver/YenKSP/blob/master/algorithms.py
 
 from collections import OrderedDict
-
+import copy
 class Graph:
     def __init__(self, size):
         self.end_vertex = None
@@ -21,7 +21,7 @@ class Graph:
         if 0 <= u < self.size and 0 <= v < self.size:
             self.adj_matrix[u][v] = weight
             # self.adj_matrix[v][u] = weight  # For undirected graph
-        self.org_matrix = self.adj_matrix
+            self.org_matrix = copy.deepcopy(self.adj_matrix)
 
     def add_vertex_data(self, vertex, data):
         if 0 <= vertex < self.size:
@@ -36,7 +36,7 @@ class Graph:
         predecessors = [None] * self.size
         distances[start_vertex] = 0
         visited = [False] * self.size
-        self.adj_matrix = self.org_matrix
+        self.adj_matrix = copy.deepcopy(self.org_matrix)
 
         for _ in range(self.size):
             min_distance = float('inf')
@@ -105,23 +105,29 @@ class Graph:
                     curr_path = p['path']
                     if root_path == curr_path[: i+1]:
                         # Remove the links that are part of the previous shortest paths which share the same root path.
-                        cost = self.org_matrix[self.vertex_data.index(curr_path[i])][self.vertex_data.index(curr_path[i+1])]
+                        first_index = self.vertex_data.index(curr_path[i])
+                        last_index = self.vertex_data.index(curr_path[i+1])
+                        cost = self.org_matrix[first_index][last_index]
                         if cost == self.INF:
                             continue
-                        list_remove_link.append([self.vertex_data.index(curr_path[i]), self.vertex_data.index(curr_path[i+1]), \
-                                             cost])
-                        self.org_matrix[self.vertex_data.index(curr_path[i])][self.vertex_data.index(curr_path[i+1])] = self.INF
+                        list_remove_link.append([first_index, last_index, cost])
+                        self.org_matrix[first_index][last_index] = self.INF
 
                 # for rootPathNode in rootPath:
                     # if rootPathNode != spurNode:
                         # remove rootPathNode from Graph;
                         # pass
+                '''
+                      Don't need to implement the code remove node from graph, because we search from root_path, not in all node in graph
+                '''
 
                 # Calculate the spur path from the spur node to the sink.
                 # Consider also checking if any spurPath found
 
                 distances, predecessors = self.dijkstra(root_path[-1], self.end_vertex)
                 path, cost = self.show_path_from_src_to_dest(distances, predecessors)
+                if cost == self.INF:
+                    break
                 spur_path = path.split("->")
                 # Entire path is made up of the root path and spur path.
                 total_path = list(OrderedDict.fromkeys(root_path + spur_path))
@@ -149,6 +155,8 @@ class Graph:
                 break
             # Sort the potential k-shortest paths by cost.
             potential_shortest_path = sorted(potential_shortest_path, key=lambda d: d['cost'])
+            if len(k_shortest_path) == K:
+                break
             # Add the lowest cost path becomes the k-shortest path.
             k_shortest_path.append(potential_shortest_path[0])
             # In fact we should rather use shift since we are removing the first element
