@@ -1,90 +1,100 @@
 import dijkstra_algorithm
 import bellman_ford_algorithm
 import floyd_warshall_algorithm
+import map.build_graph as bgraph
+import random
+import aws.loader as aloader
+import threading
+import concurrent.futures
+import time
+class I_Graph():
+    def __init__(self) -> None:
+        self.id_dict = dict()
+        self.vertexs = list()
+        self.edges = list()
+        self.list_algo = list()
+
+    def get_nodes(self):
+        return len(self.id_dict.keys())
+    
+    def load_graph(self):
+        self.id_dict, self.vertexs, self.edges =  bgraph.graph()
+
+    def method_build_graph(self, g):
+        for j in self.vertexs:
+            g.add_vertex_data(j[0], j[1])
+        for k in self.edges:
+            g.add_edge(int(k[0]), int(k[1]), k[2])
+
+    def load_algorithm(self):
+        no_nodes = len(self.id_dict.keys())
+        self.list_algo = [dijkstra_algorithm.Graph(no_nodes), bellman_ford_algorithm.Graph(no_nodes), floyd_warshall_algorithm.Graph(no_nodes)]
+        pool = concurrent.futures.ThreadPoolExecutor(max_workers=len(self.list_algo))
+        for g in self.list_algo:
+            pool.submit(self.method_build_graph, g)
+        pool.shutdown(wait=True)
+
+    def method_run_dijkstra(self, algo, start_vertex, end_vertex, is_top_K = False):
+        distances, predecessors = algo.dijkstra(start_vertex,end_vertex)
+        path, cost = algo.show_path_from_src_to_dest(distances, predecessors)
+        print(f"\nThe Dijkstra's Algorithm starting result:")
+        print(f"Path: {path}, Distance: {cost}")
+
+        if is_top_K:
+            print(f"Yen's Algorithm for 3 shortest path:")
+            A = algo.yen_ksp(path, cost)
+            for item in A:
+                print(f"{item['path']}, Distance: {item['cost']}")
+    
+    def method_run_bellman_ford(self, algo, start_vertex, end_vertex, is_top_K=False):
+        negative_cycle, distances, predecessors = algo.bellman_ford(start_vertex, end_vertex)
+        path, cost = algo.show_path_from_src_to_dest(negative_cycle, distances, predecessors)
+        print(f"\nThe Bellman-Ford's Algorithm result:")
+        print(f"Path: {path}, Distance: {cost}")
+
+        if is_top_K:
+            print(f"Yen's Algorithm for 3 shortest path:")
+            A = algo.yen_ksp(path, cost)
+            for item in A:
+                print(f"{item['path']}, Distance: {item['cost']}")
+
+    def method_run_floyd_warshall(self, algo, start_vertex, end_vertex, is_top_K=False):
+        matrix = algo.floyd_warshall(start_vertex, end_vertex)
+        path, cost = algo.show_path_from_src_to_dest(matrix)
+        print(f"\nThe Floyd-Warshall's Algorithm result")
+        print(f"Path: {path}, Distance: {cost}")
+
+        if is_top_K:
+            print(f"Yen's Algorithm for 3 shortest path:")
+            A = algo.yen_ksp(path, cost)
+            for item in A:
+                print(f"{item['path']}, Distance: {item['cost']}")
+
+    def run(self, start_vertex=0, end_vertex=0, is_top_K=False):
+        pool = concurrent.futures.ThreadPoolExecutor(max_workers=len(self.list_algo))
+        for i in range(len(self.list_algo)):
+            if i == 0:
+                pool.submit(self.method_run_dijkstra, self.list_algo[i], start_vertex, end_vertex, is_top_K)
+            elif i == 1:
+                pool.submit(self.method_run_bellman_ford, self.list_algo[i], start_vertex, end_vertex, is_top_K)
+            elif i == 2:
+                pool.submit(self.method_run_floyd_warshall, self.list_algo[i], start_vertex, end_vertex, is_top_K)
+
+        pool.shutdown(wait=True)
 
 if __name__ == '__main__':
-    g = dijkstra_algorithm.Graph(6)
-    g.add_vertex_data(0, 'C')
-    g.add_vertex_data(1, 'D')
-    g.add_vertex_data(2, 'E')
-    g.add_vertex_data(3, 'F')
-    g.add_vertex_data(4, 'G')
-    g.add_vertex_data(5, 'H')
-
-    g.add_edge(0, 1, 3)
-    g.add_edge(0, 2, 2)
-    g.add_edge(1, 3, 4)
-    g.add_edge(2, 1, 1)
-    g.add_edge(2, 4, 3)
-    g.add_edge(2, 3, 2)
-    g.add_edge(3, 4, 2)
-    g.add_edge(3, 5, 1)
-    g.add_edge(4, 5, 2)
-
-    print("The Dijkstra's Algorithm starting from vertex C to H:")
-    distances, predecessors = g.dijkstra('C','H')
-    path, cost = g.show_path_from_src_to_dest(distances, predecessors)
-    print(f"{path}, Distance: {cost}")
-    print("Yen's Algorithm for 3 shortest path from vertex C to H:")
-    A = g.yen_ksp(path, cost)
-    for item in A:
-        print(f"{item['path']}, Distance: {item['cost']}")
-    print("##################################################\n")
-
-    g = bellman_ford_algorithm.Graph(6)
-    g.add_vertex_data(0, 'C')
-    g.add_vertex_data(1, 'D')
-    g.add_vertex_data(2, 'E')
-    g.add_vertex_data(3, 'F')
-    g.add_vertex_data(4, 'G')
-    g.add_vertex_data(5, 'H')
-
-    g.add_edge(0, 1, 3)
-    g.add_edge(0, 2, 2)
-    g.add_edge(1, 3, 4)
-    g.add_edge(2, 1, 1)
-    g.add_edge(2, 4, 3)
-    g.add_edge(2, 3, 2)
-    g.add_edge(3, 4, 2)
-    g.add_edge(3, 5, 1)
-    g.add_edge(4, 5, 2)
-
-    print("The Bellman-Ford's Algorithm starting from vertex C to H:")
-    negative_cycle, distances, predecessors = g.bellman_ford('C', 'H')
-    path, cost = g.show_path_from_src_to_dest(negative_cycle, distances, predecessors)
-    print(f"{path}, Distance: {cost}")
-    print("Yen's Algorithm for 3 shortest path from vertex C to H:")
-    A = g.yen_ksp(path, cost)
-    for item in A:
-        print(f"{item['path']}, Distance: {item['cost']}")
-    print("##################################################\n")
-
-    g = floyd_warshall_algorithm.Graph(6)
-    g.add_vertex_data(0, 'C')
-    g.add_vertex_data(1, 'D')
-    g.add_vertex_data(2, 'E')
-    g.add_vertex_data(3, 'F')
-    g.add_vertex_data(4, 'G')
-    g.add_vertex_data(5, 'H')
-
-    g.add_edge(0, 1, 3)
-    g.add_edge(0, 2, 2)
-    g.add_edge(1, 3, 4)
-    g.add_edge(2, 1, 1)
-    g.add_edge(2, 4, 3)
-    g.add_edge(2, 3, 2)
-    g.add_edge(3, 4, 2)
-    g.add_edge(3, 5, 1)
-    g.add_edge(4, 5, 2)
-
-    print("The Floyd-Warshall's Algorithm starting from vertex C to H:")
-    matrix = g.floyd_warshall('C', 'H')
-    path, cost = g.show_path_from_src_to_dest(matrix)
-    print(f"{path}, Distance: {cost}")
-    print("Yen's Algorithm for 3 shortest path from vertex C to H:")
-    A = g.yen_ksp(path, cost)
-    for item in A:
-        print(f"{item['path']}, Distance: {item['cost']}")
-
+    start_time = time.time()
+    slo = None
+    with aloader.Loader("Loading alogrithm...", "Algorithm already!"):
+        slo = I_Graph()
+        slo.load_graph()
+        slo.load_algorithm()
+    
+    start_vertex = str(random.randint(0, slo.get_nodes() - 1))
+    end_vertex = str(random.randint(0, slo.get_nodes() - 1))
+    print(f"\nCalculating shortest-path between {start_vertex} and {end_vertex} ...")
+    slo.run(start_vertex, end_vertex, False)
+    print('\n')
+    print("Time: %s second".format(time.time() - start_time))
     exit(0)
 

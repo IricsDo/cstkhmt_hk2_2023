@@ -85,6 +85,8 @@ class Graph:
         else:
             path = self.make_path(predecessors, self.start_vertex, self.end_vertex)
             d = distances[self.vertex_data.index(self.end_vertex)]
+        if d == float('inf'):
+            path = 'None'
         return path, d
 
     def yen_ksp(self, S, C, K=3):

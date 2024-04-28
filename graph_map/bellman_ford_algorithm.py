@@ -80,6 +80,8 @@ class Graph:
         else:
             print("Negative weight cycle detected. Cannot compute shortest paths.")
 
+        if d == float('inf'):
+            path = 'None'
         return path, d
 
     def yen_ksp(self, S, C, K=3):

@@ -1,0 +1,64 @@
+Gene fusion network, part of the Koblenz Network Collection
+===========================================================================
+
+This directory contains the TSV and related files of the gene_fusion network: This is a gene fusion network.  Nodes are genes, and two nodes are connected if the two genes can be fused during oncogenesis. 
+
+
+More information about the network is provided here: 
+http://konect.cc/networks/gene_fusion
+
+Files: 
+    meta.gene_fusion -- Metadata about the network 
+    out.gene_fusion -- The adjacency matrix of the network in whitespace-separated values format, with one edge per line
+      The meaning of the columns in out.gene_fusion are: 
+        First column: ID of from node 
+        Second column: ID of to node
+        Third column (if present): weight or multiplicity of edge
+        Fourth column (if present):  timestamp of edges Unix time
+
+
+Use the following References for citation:
+
+@MISC{konect:2018:gene_fusion,
+    title = {Gene fusion network dataset -- {KONECT}},
+    month = feb,
+    year = {2018},
+    url = {http://konect.cc/networks/gene_fusion}
+}
+
+@article{konect:gene_fusion,
+	title = {A Gene Fusion Network in Human Neoplasia},
+	author = {Höglund, Mattias and Frigyesi, Attila and Mitelman, Felix},
+	journal = {Oncogene},
+	volume = {25},
+	number = {18},
+	pages = {2674},
+	year = {2006},
+}
+
+
+@inproceedings{konect,
+	title = {{KONECT} -- {The} {Koblenz} {Network} {Collection}},
+	author = {Jérôme Kunegis},
+	year = {2013},
+	booktitle = {Proc. Int. Conf. on World Wide Web Companion},
+	pages = {1343--1350},
+	url = {http://dl.acm.org/citation.cfm?id=2488173},
+	url_presentation = {https://www.slideshare.net/kunegis/presentationwow},
+	url_web = {http://konect.cc/},
+	url_citations = {https://scholar.google.com/scholar?cites=7174338004474749050},
+}
+
+@inproceedings{konect,
+	title = {{KONECT} -- {The} {Koblenz} {Network} {Collection}},
+	author = {Jérôme Kunegis},
+	year = {2013},
+	booktitle = {Proc. Int. Conf. on World Wide Web Companion},
+	pages = {1343--1350},
+	url = {http://dl.acm.org/citation.cfm?id=2488173},
+	url_presentation = {https://www.slideshare.net/kunegis/presentationwow},
+	url_web = {http://konect.cc/},
+	url_citations = {https://scholar.google.com/scholar?cites=7174338004474749050},
+}
+
+

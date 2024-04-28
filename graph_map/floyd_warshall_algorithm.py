@@ -87,7 +87,7 @@ class Graph:
     def show_path_from_src_to_dest(self, matrix):
         n = len(matrix)
         if n == 0:
-            return 'None', self.INF
+            return 'None', 'inf'
         d = 0
         list_vertex = list()
         for i in range(n - 1):
