@@ -6,7 +6,7 @@ from typing import List
 from googleplaces import GooglePlaces, types, lang, GooglePlacesError, ranking
 
 # Insert your API key
-API_KEY = "AIzaSyDKGfZlHdOhx1VxePjxsBYJqwnP5fFt2mo"
+API_KEY = ""
 
 def get_lat_long(address:str):
     url ='https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(address, API_KEY)
