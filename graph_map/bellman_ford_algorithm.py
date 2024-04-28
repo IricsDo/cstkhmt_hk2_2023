@@ -19,7 +19,9 @@ class Graph:
         if 0 <= u < self.size and 0 <= v < self.size:
             self.adj_matrix[u][v] = weight
             #self.adj_matrix[v][u] = weight  # For undirected graph
-            self.org_matrix = copy.deepcopy(self.adj_matrix)
+            
+    def deep_copy_org_graph(self):
+        self.org_matrix = copy.deepcopy(self.adj_matrix)
 
     def add_vertex_data(self, vertex, data):
         if 0 <= vertex < self.size:

@@ -29,12 +29,15 @@ class Graph:
             self.next_matrix[u][v] = v
             self.next_matrix[u][u] = u
             self.next_matrix[v][v] = v
-            self.org_matrix = copy.deepcopy(self.adj_matrix)
-            self.org_next = copy.deepcopy(self.next_matrix)
+
 
     def add_vertex_data(self, vertex, data):
         if 0 <= vertex < self.size:
             self.vertex_data[vertex] = data
+
+    def deep_copy_org_graph(self):
+        self.org_matrix = copy.deepcopy(self.adj_matrix)
+        self.org_next = copy.deepcopy(self.next_matrix)
 
     def floyd_warshall(self, start_vertex, end_vertex=None):
         self.start_vertex = start_vertex

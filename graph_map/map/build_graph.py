@@ -9,7 +9,7 @@ def buildGraph(filePath):
         for feature in data['features']:
             if feature['geometry']['type'] == 'LineString':
                 segment = {
-                    'id': feature['properties']['id'],
+                    'id': feature['properties']['@id'],
                     'nodes': feature['geometry']['coordinates'],
                     'weight': 1  # Placeholder weight for demonstration
                 }
@@ -58,10 +58,6 @@ def buildAdjacencyList(G):
             id_dict[str(index_id)] = n
             index_id += 1
 
-        # Limit node
-        # if index_id > 100:
-            # break
-
     for key in id_dict.keys(): 
         vertexs.append((int(key), key))
 
@@ -79,35 +75,32 @@ def buildAdjacencyList(G):
     for u, v in G.edges():
         node_u = G.nodes[u]
         node_v = G.nodes[v]
-        if (u in values) and (v  in values):
-            distance = geodesic((node_u['latitude'], node_u['longitude']), (node_v['latitude'], node_v['longitude'])).meters
+        distance = geodesic((node_u['latitude'], node_u['longitude']), (node_v['latitude'], node_v['longitude'])).meters
 
-            # Add edge (v, weight) to the adjacency list of node u
-            if u not in adj_list:
-                adj_list[u] = [(v, distance)]
-            else:
-                adj_list[u].append((v, distance))
-            # Add edge (u, weight) to the adjacency list of node v
-            if v not in adj_list:
-                adj_list[v] = [(u, distance)]
-            else:
-                adj_list[v].append((u, distance))
+        # Add edge (v, weight) to the adjacency list of node u
+        if u not in adj_list:
+            adj_list[u] = [(v, distance)]
+        else:
+            adj_list[u].append((v, distance))
+        # Add edge (u, weight) to the adjacency list of node v
+        if v not in adj_list:
+            adj_list[v] = [(u, distance)]
+        else:
+            adj_list[v].append((u, distance))
 
     # Print the adjacency list
     for node, neighbors in adj_list.items():
         # print(node, "->", neighbors)
-
         start_vertex = int(value_to_key(id_dict, node))
         for k in neighbors:
             end_vertex = int(value_to_key(id_dict, k[0]))
             edges.append((start_vertex, end_vertex, k[1]))
             # print(f"{start_vertex}->{end_vertex} = {k[1]}")
 
-
     return id_dict, vertexs, edges
 
 def graph():
-    geoJsonPath = 'graph_map/data/district1_data_osm.geojson'
+    geoJsonPath = 'graph_map/data/Co_Giang.geojson'
     G = buildGraph(geoJsonPath)
     return buildAdjacencyList(G)
 
