@@ -100,12 +100,20 @@ def buildAdjacencyList(G):
     return id_dict, vertexs, edges
 
 def graph():
-    geoJsonPath = 'graph_map/data/Co_Giang.geojson'
+    geoJsonPath = r'graph_map/data/Road/Phu_Nhuan_Road.geojson'
+    # geoJsonPath = r'data/Road/Phu_Nhuan_Road.geojson'
+
     G = buildGraph(geoJsonPath)
-    return buildAdjacencyList(G)
+    # print(geoJsonPath)
+    return [buildAdjacencyList(G), G]
+
+def get_coordinates(node_id, id_dict):
+    node = id_dict[node_id]
+    return (G.nodes[node]['latitude'], G.nodes[node]['longitude'])
 
 if __name__ == "__main__":
-    id_dict, vertexs, edges = graph()
+    graphs = graph()
+    id_dict, vertexs, edges = graphs[0]
     print('id_dict', len(id_dict))
     print('vertexs', len(vertexs))
     print('edges', len(edges))
