@@ -13,7 +13,7 @@ class Graph:
         self.org_matrix = None
         self.end_vertex = None
         self.start_vertex = None
-        self.INF = 10 ** 7
+        self.INF = float('inf')
         self.size = size
         self.vertex_data = [''] * size
         self.adj_matrix = [[self.INF] * size for _ in range(size)]

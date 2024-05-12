@@ -12,7 +12,7 @@ class Graph:
         self.adj_matrix = [[0] * size for _ in range(size)]
         self.size = size
         self.vertex_data = [''] * size
-        self.INF = 10**7
+        self.INF = float('inf')
         self.org_matrix = None
 
     def add_edge(self, u, v, weight):

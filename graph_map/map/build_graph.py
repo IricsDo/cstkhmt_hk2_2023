@@ -61,17 +61,6 @@ def buildAdjacencyList(G):
     for key in id_dict.keys(): 
         vertexs.append((int(key), key))
 
-    values = id_dict.values()
-
-    # for u, v in G.edges():
-    #     node_u = G.nodes[u]
-    #     node_v = G.nodes[v]
-    #     if node_u['id'] in values and node_v['id'] in values:
-    #         distance = geodesic((node_u['latitude'], node_u['longitude']), (node_v['latitude'], node_v['longitude'])).meters
-    #         start_vertex = int(value_to_key(id_dict, node_u['id']))
-    #         end_vertex = int(value_to_key(id_dict, node_v['id']))
-    #         edges.append((start_vertex, end_vertex, distance))
-
     for u, v in G.edges():
         node_u = G.nodes[u]
         node_v = G.nodes[v]
@@ -90,26 +79,16 @@ def buildAdjacencyList(G):
 
     # Print the adjacency list
     for node, neighbors in adj_list.items():
-        # print(node, "->", neighbors)
         start_vertex = int(value_to_key(id_dict, node))
         for k in neighbors:
             end_vertex = int(value_to_key(id_dict, k[0]))
             edges.append((start_vertex, end_vertex, k[1]))
-            # print(f"{start_vertex}->{end_vertex} = {k[1]}")
 
     return id_dict, vertexs, edges
 
-def graph():
-    geoJsonPath = r'graph_map/data/Road/Phu_Nhuan_Road.geojson'
-    # geoJsonPath = r'data/Road/Phu_Nhuan_Road.geojson'
-
+def graph(geoJsonPath):
     G = buildGraph(geoJsonPath)
-    # print(geoJsonPath)
     return [buildAdjacencyList(G), G]
-
-def get_coordinates(node_id, id_dict):
-    node = id_dict[node_id]
-    return (G.nodes[node]['latitude'], G.nodes[node]['longitude'])
 
 if __name__ == "__main__":
     graphs = graph()
@@ -117,8 +96,5 @@ if __name__ == "__main__":
     print('id_dict', len(id_dict))
     print('vertexs', len(vertexs))
     print('edges', len(edges))
-    # print(id_dict)
-    # print(vertexs)
-    # print(edges)
 
     exit(0)

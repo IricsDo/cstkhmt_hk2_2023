@@ -15,7 +15,7 @@ class Graph:
         self.org_matrix = None
         self.size = size
         self.vertex_data = [''] * size
-        self.INF = 10**7
+        self.INF = float('inf')
 
     def add_edge(self, u, v, weight):
         if 0 <= u < self.size and 0 <= v < self.size:
