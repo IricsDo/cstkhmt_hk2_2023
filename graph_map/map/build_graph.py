@@ -48,6 +48,7 @@ def buildAdjacencyList(G):
     # Create an empty adjacency list
     adj_list = {}
     id_dict = dict() # {'1': 'some thing name', ...}
+    lat_long_dict = dict()
     vertexs = list() # [(1, '1'), (2, '2'), ...]
     edges = list() # [(1, 2, 1000m), (2, 1, 1000m), ...]
     index_id = 0
@@ -56,6 +57,7 @@ def buildAdjacencyList(G):
     for n in G.nodes():
         if n not in id_dict.values():
             id_dict[str(index_id)] = n
+            lat_long_dict[str(index_id)]= (G.nodes[n]['latitude'], G.nodes[n]['longitude'])
             index_id += 1
 
     for key in id_dict.keys(): 
@@ -84,16 +86,17 @@ def buildAdjacencyList(G):
             end_vertex = int(value_to_key(id_dict, k[0]))
             edges.append((start_vertex, end_vertex, k[1]))
 
-    return id_dict, vertexs, edges
+    return id_dict, lat_long_dict, vertexs, edges
 
 def graph(geoJsonPath):
     G = buildGraph(geoJsonPath)
     return [buildAdjacencyList(G), G]
 
 if __name__ == "__main__":
-    graphs = graph()
-    id_dict, vertexs, edges = graphs[0]
+    graphs = graph('graph_map/data/Road/Co_Giang_Road.geojson')
+    id_dict, lat_long_dict, vertexs, edges = graphs[0]
     print('id_dict', len(id_dict))
+    print('lat_long_dict', len(lat_long_dict))
     print('vertexs', len(vertexs))
     print('edges', len(edges))
 
