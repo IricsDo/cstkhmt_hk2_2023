@@ -49,8 +49,8 @@ if __name__ == '__main__':
             start_time = time.time()
             tracemalloc.start()
             
-            result = slo.run_sequence(algo, start_vertex, end_vertex, False, False)
-            # result = slo.run_sequence(algo, start_vertex, end_vertex, True, False)
+            # result = slo.run_sequence(algo, start_vertex, end_vertex, False, False)
+            result = slo.run_sequence(algo, start_vertex, end_vertex, True, False)
 
             size, peak = tracemalloc.get_traced_memory()
             tracemalloc.reset_peak()
@@ -98,7 +98,9 @@ if __name__ == '__main__':
     axis[1].legend(algorithm_name)
     axis[1].grid(True)
 
-    plt.savefig("graph_map/one_shortest_measure.jpg")
+    # plt.savefig("graph_map/one_shortest_measure.jpg")
+    plt.savefig("graph_map/k(3)_shortest_measure.jpg")
+
 
     print('Done')
     print('\n')

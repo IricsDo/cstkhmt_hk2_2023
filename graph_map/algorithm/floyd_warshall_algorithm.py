@@ -168,7 +168,7 @@ class Graph:
                     for c in range(0, len(root_path) - 1):
                         pre_cost += self.org_matrix[self.vertex_data.index(root_path[c])][
                             self.vertex_data.index(root_path[c + 1])]
-                total_cost = cost + pre_cost
+                total_cost = float(cost) + float(pre_cost)
                 potential_k = {'cost': total_cost, 'path': total_path}
                 # Add the potential k-shortest path to the heap.
                 if not (potential_k in potential_shortest_path):

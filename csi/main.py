@@ -12,14 +12,19 @@ def louvain_method(G: nx.Graph):
 
     # compute the best partition
     partition = community_louvain.best_partition(G)
-
+    print("Number of community louvain", len(list(set(partition.values()))))
     # draw the graph
     pos = nx.spring_layout(G, seed=42, k = 0.3)
     # color the nodes according to their partition
     cmap = cm.get_cmap('viridis', max(partition.values()) + 1)
-    nx.draw_networkx_nodes(G, pos, partition.keys(), node_size=40, 
+    im = nx.draw_networkx_nodes(G, pos, partition.keys(), node_size=12, 
                         cmap=cmap, node_color=list(partition.values()))
     nx.draw_networkx_edges(G, pos, alpha=0.5)
+    nx.draw_networkx_labels(G, pos, font_size=8, font_color="black")
+    title = f"Found in louvain {len(list(set(partition.values())))} community"
+    plt.xticks([])
+    plt.yticks([])
+    plt.title(title)
     # plt.show()
     plt.savefig("csi/visualize/Louvain.png")
     plt.clf()
@@ -91,6 +96,6 @@ def visualize_communities(graph, communities, i):
 if __name__ == '__main__':
 
     G = bgraph.load_graph_0()
-    # louvain_method(G)
+    louvain_method(G)
     girvan_newman_method(G)
     exit(0)

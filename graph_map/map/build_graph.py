@@ -95,9 +95,9 @@ def graph(geoJsonPath):
 if __name__ == "__main__":
     graphs = graph('graph_map/data/Road/Co_Giang_Road.geojson')
     id_dict, lat_long_dict, vertexs, edges = graphs[0]
-    print('id_dict', len(id_dict))
-    print('lat_long_dict', len(lat_long_dict))
-    print('vertexs', len(vertexs))
-    print('edges', len(edges))
+    # print('id_dict', len(id_dict))
+    # print('lat_long_dict', len(lat_long_dict))
+    print('Number of vertexs in graph is', len(vertexs))
+    print('Number of edges in graph is ', len(edges))
 
     exit(0)
